@@ -275,6 +275,105 @@ func countAndSayFromLast(_ string: String) -> String {
 }
 
 
+//19. remove the Nth node from the end of the list 
+
+/**
+ 
+ Given a linked list, remove the nth node from the end of list and return its head.
+ 
+ For example,
+ 
+ Given linked list: 1->2->3->4->5, and n = 2.
+ 
+ After removing the second node from the end, the linked list becomes 1->2->3->5.
+ Note:
+ Given n will always be valid.
+ Try to do this in one pass.
+ 
+ 
+ */
+public class ListNode {
+    public var val: Int
+    public var next: ListNode?
+    public init(_ val: Int) {
+        self.val = val
+        self.next = nil
+    }
+}
+
+func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
+    
+    if head == nil {
+        return head
+    }
+    
+    let start = ListNode(0)
+    start.next = head
+    var slow: ListNode? = start
+    var fast: ListNode? = start
+    
+    for _ in 0..<n {
+        fast = fast?.next
+    }
+    
+    while fast?.next != nil {
+        fast = fast?.next
+        slow = slow?.next
+    }
+    
+    slow?.next = slow?.next?.next
+    
+    return start.next
+}
+
+
+//27. remove element
+/**
+ 
+ Given an array and a value, remove all instances of that value in place and return the new length.
+ 
+ Do not allocate extra space for another array, you must do this in place with constant memory.
+ 
+ The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+ 
+ Example:
+ Given input array nums = [3,2,2,3], val = 3
+ 
+ Your function should return length = 2, with the first two elements of nums being 2.
+ 
+ */
+func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
+    
+    var num = 0;
+    for index in 0..<nums.count {
+        if val != nums[index] {
+            nums[num] = nums[index]
+            num += 1
+        }
+    }
+    return num
+}
+
+
+func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+    
+    var left = 0
+    var right = nums.count - 1
+    
+    while left <= right {
+        
+        let mid: Int =  left + (right - left) / 2
+        
+        if nums[mid] <= target {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+        
+    }
+    return left
+}
+
 
 
 
