@@ -375,6 +375,76 @@ func searchInsert(_ nums: [Int], _ target: Int) -> Int {
 }
 
 
+//26. valid parentheses
+
+/**
+ 
+ Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+ 
+ The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+ 
+ */
+
+func isValid(_ string: String) -> Bool {
+    var stack = [Character]()
+    
+    for char in string.characters {
+        
+        if char == "("  {
+            stack.append(")")
+        } else if char == "[" {
+            stack.append("]")
+        } else if char == "{" {
+            stack.append("}")
+        } else if (stack.count == 0 || stack.removeLast() != char) {
+            return false
+        }
+    }
+    return stack.count == 0
+}
+
+
+// 202. Happy Number
+/*
+ 
+ Write an algorithm to determine if a number is "happy".
+ 
+ A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
+ 
+ Example: 19 is a happy number
+ 
+ 12 + 92 = 82
+ 82 + 22 = 68
+ 62 + 82 = 100
+ 12 + 02 + 02 = 1
+ */
+func digitSum(_ n: Int) -> Int {
+    
+    var temp = n
+    var sum: Int = 0
+    while temp > 0 {
+        
+        let remain = temp % 10
+        sum += remain * remain
+        temp = temp / 10
+    }
+    
+    return sum
+}
+
+func isHappy(_ n: Int) -> Bool {
+    
+    var slow = n
+    var fast = n
+    repeat {
+        slow = digitSum(slow)
+        fast = digitSum(fast)
+        fast = digitSum(fast)
+    } while slow != fast
+    
+    return slow == 1
+}
+
 
 
 
