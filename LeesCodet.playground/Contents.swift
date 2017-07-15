@@ -167,8 +167,8 @@ func groupAnagrams(_ strs: [String]) -> [[String]] {
     return result
 }
 
-let array = groupAnagrams(anagramArray)
-print(array)
+//let array = groupAnagrams(anagramArray)
+//print(array)
 
 
 
@@ -434,7 +434,7 @@ func digitSum(_ n: Int) -> Int {
 
 func isHappy(_ n: Int) -> Bool {
     
-    var slow = n
+    /*var slow = n
     var fast = n
     repeat {
         slow = digitSum(slow)
@@ -442,22 +442,180 @@ func isHappy(_ n: Int) -> Bool {
         fast = digitSum(fast)
     } while slow != fast
     
-    return slow == 1
+    return slow == 1*/
+    
+    
+    //有人提出质疑，快指针不一定能刚好抓住慢的，
+    var set = Set<Int>()
+    
+    var temp = digitSum(n)
+    
+    while !set.contains(temp) {
+        
+        set.insert(temp)
+        if temp == 1 {
+            return true
+        }
+        temp = digitSum(temp)
+    }
+    
+    return false
+}
+
+
+//203. Remove Linked List Elements
+/**
+ 
+ Remove all elements from a linked list of integers that have value val.
+ 
+ Example
+ Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+ Return: 1 --> 2 --> 3 --> 4 --> 5
+ 
+ */
+
+func removeElements(_ head: ListNode?, _ val: Int) -> ListNode? {
+    
+    if head == nil {
+        return head
+    }
+    
+    let temp = ListNode(0)
+    temp.next = head
+    var slow: ListNode? = temp
+    var fast = slow?.next
+    
+    while fast != nil {
+        if fast?.val == val {
+            slow?.next = fast?.next
+            fast = fast?.next
+        } else {
+            slow = slow?.next
+            fast = fast?.next
+        }
+    }
+    
+    return temp.next
+}
+
+
+//204. cout the primes
+/**
+ 
+ 西元前250年，希腊数学家厄拉多塞(Eeatosthese)想到了一个非常美妙的质数筛法，减少了逐一检查每个数的的步骤，可以比较简单的从一大堆数字之中，筛选出质数来，这方法被称作厄拉多塞筛法(Sieve of Eeatosthese)。
+ 
+ 具体操作：先将 2~n 的各个数放入表中，然后在2的上面画一个圆圈，然后划去2的其他倍数；第一个既未画圈又没有被划去的数是3，将它画圈，再划去3的其他倍数；现在既未画圈又没有被划去的第一个数 是5，将它画圈，并划去5的其他倍数……依次类推，一直到所有小于或等于 n 的各数都画了圈或划去为止。这时，表中画了圈的以及未划去的那些数正好就是小于 n 的素数。
+ */
+
+func countPrimes(_ n: Int) -> Int {
+    
+    if n < 2 {
+        return 0
+    }
+    
+    var count = 0
+    var flags = Array<Bool>(repeatElement(false, count: n))
+    for num in 2...n {
+        
+        if flags[num] == false {
+            count += 1
+            var j = 2
+            while num * j < n {
+                flags[num * j] = true
+                j += 1
+            }
+        }
+    }
+    return count
+}
+
+let a = countPrimes(2)
+
+
+
+
+//205. Isomorphic Strings
+func isIsomorphic(_ s: String, _ t: String) -> Bool {
+    
+    var mapS = [Character: Character]()
+    var mapT = [Character: Character]()
+    
+    for index in 0..<s.characters.count {
+        let charInS = s[s.index(s.startIndex, offsetBy: index)]
+        let charInT = t[t.index(t.startIndex, offsetBy: index)]
+        
+        if mapS[charInS] == nil {
+            mapS[charInS] = charInT
+        } else {
+            if mapS[charInS] != charInT {
+                return false
+            }
+        }
+        
+        if mapT[charInT] == nil {
+            mapT[charInT] = charInS
+        } else {
+            if mapT[charInT] != charInS {
+                return false
+            }
+        }
+    }
+    
+    return true
 }
 
 
 
+//206. Reverse Linked List
+/**
+ Assume that we have linked list 1 → 2 → 3 → Ø, we would like to change it to Ø ← 1 ← 2 ← 3.
+ 
+ While you are traversing the list, change the current node's next pointer to point to its previous element. Since a node does not have reference to its previous node, you must store its previous element beforehand. You also need another pointer to store the next node before changing the reference. Do not forget to return the new head reference at the end!
+ 
+ */
+func reverseList(_ head: ListNode?) -> ListNode? {
+    var cursor = head
+    var previous: ListNode?
+    
+    while cursor != nil {
+        
+        let cursorNext = cursor?.next
+        cursor?.next = previous
+        previous = cursor
+        cursor = cursorNext
+    }
+    return previous
+}
 
 
+//217. Contains Duplicate
+/**
+ 
+ Given an array of integers, find if the array contains any duplicates. Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+ */
 
-
-
-
-
-
-
-
-
+func containsDuplicate(_ nums: [Int]) -> Bool {
+    
+    var set = Set<Int>()
+    var count = 0
+//    for index in 0..<nums.count {
+//        let num = nums[index]
+//        if set.contains(num) {
+//            return true
+//        } else {
+//            set.insert(num)
+//        }
+//    }
+    for index in 0..<nums.count {
+        let num = nums[index]
+        set.insert(num)
+        let newCount = set.count
+        if newCount == count {
+            return true
+        }
+    }
+    return false
+}
 
 
 
