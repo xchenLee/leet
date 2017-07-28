@@ -617,8 +617,90 @@ func containsDuplicate(_ nums: [Int]) -> Bool {
     return false
 }
 
+//219. Contains Duplicate II
+
+/**
+ 
+ Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k.
+ 
+ */
+
+/**
+ 
+ 这个算法在跑的时候失败了，input[1], 1, 要求返回true 这个算法返回false，但是我觉得程序是对的，一个元素的数组根本没有重复的，
+ 
+ 
+ 网友的explanation
+ 
+ Explanation: It iterates over the array using a sliding window. The front of the window is at i, the rear of the window is k steps back. The elements within that window are maintained using a set. While adding new element to the set, if add() returns false, it means the element already exists in the set. At that point, we return true. If the control reaches out of for loop, it means that inner return true never executed, meaning no such duplicate element was found.
+ 
+ 还有网友贴了一个case
+ 
+ [1,2,3,4,5,6,7,8,9,1,10,11,1,12]
+ 
+ 3
+ 
+ 其中1是重复的，但是，1有两个距离 9， 还有 3  按道理讲说两个元素最大是k, 但是因为第一个距离因为超过了被从set中删掉了，
+ 
+ */
+func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
+    
+    var set = Set<Int>()
+    for index in 0..<nums.count {
+        
+        if index > k {
+            //remove element if its distance to nums[i] is not lesser than k
+            set.remove(nums[index - k - 1])
+        }
+        //because all still existed elements is closer than k distance to the num[i], therefore if the add() return false, it means there's a same value element already existed within the distance k, therefore return true.
+        if nums.contains(nums[index]) {
+            return true
+        }
+    }
+    return false
+}
 
 
+public class TreeNode {
+    public var val: Int
+    public var left: TreeNode?
+    public var right: TreeNode?
+    public init(_ val: Int) {
+        self.val = val
+        self.left = nil
+        self.right = nil
+    }
+}
+
+
+//226. Invert Binary Tree
+//递归要快一些
+func invertTree(_ root: TreeNode?) -> TreeNode? {
+    if root == nil {
+        return root
+    }
+    var left = root?.left
+    root?.left = root?.right
+    root?.right = left
+    invertTree(root?.left)
+    invertTree(root?.right)
+    return root
+}
+
+
+//231. Power of Two
+/**
+ 
+ Given an integer, write a function to determine if it is a power of two.
+ 
+ Power of 2 means only one bit of n is '1', so use the trick n&(n-1)==0 to judge whether that is the case
+ */
+func isPowerOfTwo(_ n: Int) -> Bool {
+    if n <= 0 {
+        return false
+    }
+    return (n & (n-1)) == 0
+}
 
 
 
